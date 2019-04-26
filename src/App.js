@@ -9,6 +9,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image} from 'react-native';
 
+import NavApp from './AppNavigator';
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -17,13 +19,14 @@ const instructions = Platform.select({
 });
 
 type Props = {};
-export default class App extends Component<Props> {
+class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.nav}>
           <Image source={require('./assets/img/icon/logo.png')} style={styles.logo}/>
         </View>
+        <NavApp/>
       </View>
     );
   }
@@ -37,7 +40,6 @@ const styles = StyleSheet.create({
   nav: {
     height: 100,
     width: '100%',
-    position: "absolute",
     top: 0,
     display: "flex",
     justifyContent: "space-between",
@@ -58,3 +60,7 @@ const styles = StyleSheet.create({
     height: 40
   }
 });
+
+
+
+export default App;
