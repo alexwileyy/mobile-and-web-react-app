@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert} from 'react-native';
 import LayoutStyles from '../styles/layout';
 
+import {TextColour, BrandYellow} from "../variables";
+
 import { applyLetterSpacing } from '../helpers';
 
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -16,7 +18,7 @@ export default class Home extends Component<Props> {
             showTimelineDate: false,
             timelineDate: new Date(),
             modalVisible: false,
-            displayDate: "today"
+            displayDate: "Today"
         }
     }
 
@@ -27,20 +29,31 @@ export default class Home extends Component<Props> {
      * @returns {boolean}
      */
     compareDates = (dateA, dateB) => {
+        console.log(dateA);
         return `${day[dateA.getDay()]} ${month[dateA.getUTCMonth()+1]} ${dateA.getUTCFullYear()}` === `${day[dateB.getDay()]} ${month[dateB.getUTCMonth()+1]} ${dateB.getUTCFullYear()}`
     };
 
     /**
      * Update the timeline date
-     * @param newDate
+     * @param datePickerDate
      */
-    updateTimelineDate = (newDate) => {
-        this.setState({timelineDate: newDate});
-        if(this.compareDates(new Date(), newDate)) {
-            this.setState({displayDate: "today"});
-            console.log("Setting to today..");
-        } else {
-            this.setState({displayDate: `${day[newDate.getDay()]} ${month[newDate.getUTCMonth()+1]} ${newDate.getUTCFullYear()}`})
+    updateTimelineDate = (datePickerDate) => {
+        this.setState({timelineDate: datePickerDate});
+        let yesterday = new Date();
+        let tomorrow = new Date();
+        const date = new Date();
+        yesterday = yesterday.setDate(date.getDate() - 1);
+        tomorrow = tomorrow.setDate(date.getDate() + 1);
+        if(this.compareDates(new Date(), datePickerDate)) {
+            this.setState({displayDate: "Today"});
+        } else if (this.compareDates(new Date(yesterday), datePickerDate)) {
+            this.setState({displayDate: "Yesterday"});
+        }
+        else if (this.compareDates(new Date(tomorrow), datePickerDate)) {
+            this.setState({displayDate: "Tomorrow"});
+        }
+        else {
+            this.setState({displayDate: `${day[datePickerDate.getDay()]} ${month[datePickerDate.getUTCMonth()+1]} ${datePickerDate.getUTCFullYear()}`})
         }
     };
 
@@ -51,6 +64,15 @@ export default class Home extends Component<Props> {
         this.setState(state => ({modalVisible: !state.modalVisible}))
     };
 
+    handleScroll = (scroll) => {
+        this.props.toggleDateHeader(true);
+        if(scroll.nativeEvent.contentOffset.y >= 40) {
+            this.props.toggleDateHeader(true);
+        } else {
+            this.props.toggleDateHeader(false);
+        }
+    };
+
     /**
      * Render the component
      * @returns {*}
@@ -58,16 +80,6 @@ export default class Home extends Component<Props> {
     render() {
         return (
             <View style={LayoutStyles.appContainer}>
-
-                <ScrollView>
-
-                    <View style={styles.timelimeScopeContainer}>
-                    <Text style={styles.timelineScopeText}>{applyLetterSpacing("VIEWING MOMENTS FOR:", 2)}</Text>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Text style={styles.timelineButton} onPress={this.toggleDatePicker}>{this.state.displayDate}</Text>
-                    </View>
-                </View>
-                </ScrollView>
 
                 <Modal
                     animationType="fade"
@@ -89,6 +101,60 @@ export default class Home extends Component<Props> {
                         </View>
                     </View>
                 </Modal>
+
+                <ScrollView scrollEventThrottle={100} onScrollBeginDrag={this.handleScroll} onScroll={this.handleScroll} onScrollEndDrag={this.handleScroll}>
+
+                    <View style={styles.timelimeScopeContainer}>
+                        <Text style={styles.timelineScopeText}>{applyLetterSpacing("VIEWING MOMENTS FOR:", 2)}</Text>
+                        <View style={{flex: 1, flexDirection: 'row'}}>
+                            <Text style={styles.timelineButton} onPress={this.toggleDatePicker}>{this.state.displayDate}</Text>
+                        </View>
+                    </View>
+
+                    <View>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <Text style={styles.momentsTitle}>Moments</Text>
+                    </View>
+
+                </ScrollView>
 
             </View>
         );
@@ -130,5 +196,12 @@ const styles = StyleSheet.create({
     },
     datePickerContainer: {
         backgroundColor: "white"
-    }
+    },
+    momentsTitle: {
+        fontSize: 40,
+        fontFamily: "Catamaran-Bold",
+        color: TextColour,
+        marginTop: 40
+    },
+
 });

@@ -7,9 +7,12 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image} from 'react-native';
+import {Animated, Platform, StyleSheet, Text, View, Image} from 'react-native';
 
-import NavApp from './AppNavigator';
+import GetNavStack, {NavStack} from './AppNavigator';
+import {BrandYellow} from "./variables";
+
+import {containerPadding} from './variables'
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -20,13 +23,54 @@ const instructions = Platform.select({
 
 type Props = {};
 class App extends Component<Props> {
+
+  constructor(props) {
+    super(props);
+    this.NewNavStack = GetNavStack({toggleDateHeader: this.toggleDateHeader});
+  }
+
+  state = {
+    showDateHeader: false,
+    fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+  };
+
+  componentDidMount(): void {
+  }
+
+  toggleDateHeader = (toggle) => {
+
+    this.setState(state => ({showDateHeader: toggle}), ()=>{
+      Animated.timing(                  // Animate over time
+          this.state.fadeAnim,            // The animated value to drive
+          {
+            toValue: toggle ? 1 : 0,                   // Animate to opacity: 1 (opaque)
+            duration: 200,              // Make it take a while
+          }
+      ).start();
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.nav}>
           <Image source={require('./assets/img/icon/logo.png')} style={styles.logo}/>
         </View>
-        <NavApp/>
+        <this.NewNavStack/>
+        <Animated.View          // Special animatable View
+            style={{
+              width: "100%",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              opacity: this.state.fadeAnim,         // Bind opacity to animated value
+            }}
+        >
+          <View style={styles.navTop}>
+            <Text style={styles.navTopText}>Monday 28 April</Text>
+          </View>
+        </Animated.View>
       </View>
     );
   }
@@ -58,6 +102,29 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 40
+  },
+  navTopContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  navTop: {
+    backgroundColor: BrandYellow,
+    width: "100%",
+    paddingTop: 50,
+    paddingLeft: containerPadding,
+    paddingRight: containerPadding,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 1,
+  },
+  navTopText: {
+    color: "white",
+    fontSize: 30,
+    fontFamily: "Catamaran-Bold",
   }
 });
 
