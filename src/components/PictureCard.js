@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, ImageBackground} from 'react-native';
 
-import LinearGradient from 'react-native-linear-gradient';
-
-import {TextColour, months} from "../variables";
+import {months, BrandYellow} from "../variables";
 import PropTypes from "prop-types";
-import TextCard from "./TextCard";
 
 type Props = {};
+
 export default class PictureCard extends Component<Props> {
 
     constructor(props) {
@@ -25,10 +23,10 @@ export default class PictureCard extends Component<Props> {
 
         return(
             <View style={styles.container}>
-                <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#A8FF78', '#1CD8D2']} style={styles.linearGradient}>
+                <ImageBackground source={{uri: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80"}} style={styles.background}>
                     <Text style={styles.cardDate}>{`${date.getDate()} ${months[date.getMonth() + 1]} @ ${date.getUTCHours()}:${date.getUTCMinutes()}`}</Text>
                     <Text style={styles.cardText}>{text}</Text>
-                </LinearGradient>
+                </ImageBackground>
             </View>
         )
     }
@@ -39,28 +37,31 @@ export default class PictureCard extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         overflow: "hidden",
-        // backgroundColor: "#1CD8D2"
+        backgroundColor: BrandYellow,
+        borderRadius: 10,
     },
     cardText: {
         color: "white",
         fontSize: 30,
-        paddingTop: 40,
+        paddingTop: 90,
         fontFamily: "Catamaran-Bold",
-        lineHeight: 30
+        lineHeight: 30,
+        paddingLeft: 10,
+        paddingRight: 10
     },
     cardDate: {
         fontFamily: "Catamaran-Bold",
         color: "white",
-        opacity: .8
+        opacity: .8,
+        paddingTop: 10,
+        paddingLeft: 10
     },
-    linearGradient: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "space-between",
+    background: {
         width: "100%",
         height: "100%",
-        borderRadius: 10,
-        padding: 10
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "space-between"
     }
 });
 

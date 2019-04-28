@@ -8,6 +8,7 @@ import { applyLetterSpacing } from '../helpers';
 
 // Components
 import TextCard from '../components/TextCard';
+import PictureCard from '../components/PictureCard';
 
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Oct", "Nov", "Dec"];
@@ -21,7 +22,20 @@ export default class Home extends Component<Props> {
             showTimelineDate: false,
             timelineDate: new Date(),
             modalVisible: false,
-            displayDate: "Today"
+            displayDate: "Today",
+            cards: [
+                {
+                    text: "A king man held the door open for me",
+                    type: "text",
+                    date: new Date()
+                },
+                {
+                    text: "The barista who made my coffee smiled at me",
+                    type: "picture",
+                    date: new Date(),
+                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80"
+                }
+            ]
         }
     }
 
@@ -81,6 +95,26 @@ export default class Home extends Component<Props> {
     };
 
     /**
+     * Renders a card for a given type
+     * @param props
+     * @returns {*}
+     */
+    renderCard = (props) => {
+
+        if(props.type === "text") {
+            return (
+                <TextCard text={props.text} date={props.date}/>
+            )
+        }
+        else if(props.type === "picture"){
+            return (
+                <PictureCard background={props.image} text={props.text} date={props.date}/>
+            )
+        }
+
+    };
+
+    /**
      * Render the component
      * @returns {*}
      */
@@ -119,9 +153,17 @@ export default class Home extends Component<Props> {
                     </View>
 
                     <View>
-                        <TextCard text={"A kind man held the door open"}
-                                  date={new Date()}
-                        />
+
+                        {this.state.cards.map((card, index) => {
+
+                            return (
+                                <View key={index} style={styles.timelineCard}>
+                                    {this.renderCard(card)}
+                                </View>
+                            )
+
+                        })}
+
                     </View>
 
                 </ScrollView>
@@ -174,5 +216,7 @@ const styles = StyleSheet.create({
         color: TextColour,
         marginTop: 40
     },
-
+    timelineCard: {
+        marginBottom: 20
+    }
 });

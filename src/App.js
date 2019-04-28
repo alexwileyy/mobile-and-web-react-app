@@ -26,12 +26,13 @@ class App extends Component<Props> {
 
   constructor(props) {
     super(props);
-    this.NewNavStack = GetNavStack({toggleDateHeader: this.toggleDateHeader});
+    this.NewNavStack = GetNavStack({toggleDateHeader: this.toggleDateHeader, changeNavType: this.changeNavType});
   }
 
   state = {
     showDateHeader: false,
     fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+    navType: 'normal'
   };
 
   componentDidMount(): void {
@@ -50,11 +51,36 @@ class App extends Component<Props> {
     });
   };
 
+  /**
+   * Changes the nav type in the application
+   * @param type
+   */
+  changeNavType = (type) => {
+    if(["normal", "textMoment", "pictureMoment"].indexOf(type) === -1) {
+      throw new Error("Nav type must be a valid type.");
+    }
+    this.setState({navType: type})
+  };
+
+  /**
+   * Renders the navigation
+   * @returns {*}
+   */
+  renderNav = () => {
+    const type = this.state.navType;
+    switch (type) {
+      case "normal":
+        return (<Image source={require('./assets/img/icon/logo.png')} style={styles.logo}/>);
+      case "textMoment":
+        return (<Text>Text Moment</Text>)
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.nav}>
-          <Image source={require('./assets/img/icon/logo.png')} style={styles.logo}/>
+          {this.renderNav()}
         </View>
         <this.NewNavStack/>
         <Animated.View          // Special animatable View
