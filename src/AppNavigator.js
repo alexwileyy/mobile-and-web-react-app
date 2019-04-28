@@ -14,16 +14,16 @@ export default function GetNavStack(props){
 
     const AppNavigator = createStackNavigator({
         Home: {
-            screen: () => <Home {...props} />
+            screen: (navProps) => (<Home {...navProps} {...props} />)
         },
         NewMoment: {
-            screen: () => <NewMoment {...props} />
+            screen: (navProps) => <NewMoment {...navProps} {...props} />
         },
         TextMoment: {
-            screen: () => <TextMoment {...props} />
+            screen: (navProps) => <TextMoment {...navProps} {...props} />
         },
         PictureMoment: {
-            screen: () => <PictureMoment {...props} />
+            screen: (navProps) => <PictureMoment {...navProps} {...props} />
         },
 
     },{

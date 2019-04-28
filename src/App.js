@@ -7,12 +7,10 @@
  */
 
 import React, {Component} from 'react';
-import {Animated, Platform, StyleSheet, Text, View, Image} from 'react-native';
+import {Animated, Platform, StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
 import GetNavStack, {NavStack} from './AppNavigator';
-import {BrandYellow} from "./variables";
-
-import {containerPadding} from './variables'
+import {BrandYellow, containerPadding} from "./variables";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -26,18 +24,28 @@ class App extends Component<Props> {
 
   constructor(props) {
     super(props);
-    this.NewNavStack = GetNavStack({toggleDateHeader: this.toggleDateHeader, changeNavType: this.changeNavType});
-  }
+    this.NewNavStack = GetNavStack({
+      toggleDateHeader: this.toggleDateHeader,
+      changeNavType: this.changeNavType,
+      toggleNav: this.toggleNav
+    });
 
-  state = {
-    showDateHeader: false,
-    fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
-    navType: 'normal'
-  };
+    this.state = {
+      showDateHeader: false,
+      fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+      navType: 'normal',
+      showNav: true
+    };
+
+  }
 
   componentDidMount(): void {
   }
 
+  /**
+   * Toggles whether to show the date header or now
+   * @param toggle
+   */
   toggleDateHeader = (toggle) => {
 
     this.setState(state => ({showDateHeader: toggle}), ()=>{
@@ -51,37 +59,10 @@ class App extends Component<Props> {
     });
   };
 
-  /**
-   * Changes the nav type in the application
-   * @param type
-   */
-  changeNavType = (type) => {
-    if(["normal", "textMoment", "pictureMoment"].indexOf(type) === -1) {
-      throw new Error("Nav type must be a valid type.");
-    }
-    this.setState({navType: type})
-  };
-
-  /**
-   * Renders the navigation
-   * @returns {*}
-   */
-  renderNav = () => {
-    const type = this.state.navType;
-    switch (type) {
-      case "normal":
-        return (<Image source={require('./assets/img/icon/logo.png')} style={styles.logo}/>);
-      case "textMoment":
-        return (<Text>Text Moment</Text>)
-    }
-  };
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.nav}>
-          {this.renderNav()}
-        </View>
         <this.NewNavStack/>
         <Animated.View          // Special animatable View
             style={{
@@ -107,15 +88,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
-  nav: {
-    height: 100,
-    width: '100%',
-    top: 0,
-    display: "flex",
+  navContent: {
+    width: "100%",
+    flex: 1,
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    paddingTop: 50,
-    paddingBottom: 10
+    paddingLeft: containerPadding,
+    paddingRight: containerPadding
   },
   navText: {
     color: "white",
@@ -124,10 +103,6 @@ const styles = StyleSheet.create({
   navIcon: {
     width: 15,
     height: 15
-  },
-  logo: {
-    width: 150,
-    height: 40
   },
   navTopContainer: {
     position: "absolute",
@@ -150,6 +125,13 @@ const styles = StyleSheet.create({
   navTopText: {
     color: "white",
     fontSize: 30,
+    fontFamily: "Catamaran-Bold",
+  },
+  navBackArrow: {
+    width: 37,
+    height: 29
+  },
+  navMomentText: {
     fontFamily: "Catamaran-Bold",
   }
 });

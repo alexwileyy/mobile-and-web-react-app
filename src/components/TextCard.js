@@ -13,6 +13,10 @@ export default class TextCard extends Component<Props> {
         this.state = {};
     }
 
+    openMoment = () => {
+        this.props.navigation.navigate('TextMoment')
+    };
+
     render(){
 
         const {
@@ -24,7 +28,7 @@ export default class TextCard extends Component<Props> {
             <View style={styles.container}>
                 <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#A8FF78', '#1CD8D2']} style={styles.linearGradient}>
                     <Text style={styles.cardDate}>{`${date.getDate()} ${months[date.getMonth() + 1]} @ ${date.getUTCHours()}:${date.getUTCMinutes()}`}</Text>
-                    <Text style={styles.cardText}>{text}</Text>
+                    <Text style={styles.cardText} onPress={this.openMoment}>{text}</Text>
                 </LinearGradient>
             </View>
         )

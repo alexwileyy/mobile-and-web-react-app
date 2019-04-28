@@ -7,6 +7,7 @@ import {TextColour, BrandYellow} from "../variables";
 import { applyLetterSpacing } from '../helpers';
 
 // Components
+import NormalNav from '../components/NormalNav'
 import TextCard from '../components/TextCard';
 import PictureCard from '../components/PictureCard';
 
@@ -46,7 +47,6 @@ export default class Home extends Component<Props> {
      * @returns {boolean}
      */
     compareDates = (dateA, dateB) => {
-        console.log(dateA);
         return `${day[dateA.getDay()]} ${month[dateA.getUTCMonth()+1]} ${dateA.getUTCFullYear()}` === `${day[dateB.getDay()]} ${month[dateB.getUTCMonth()+1]} ${dateB.getUTCFullYear()}`
     };
 
@@ -96,19 +96,19 @@ export default class Home extends Component<Props> {
 
     /**
      * Renders a card for a given type
-     * @param props
+     * @param cardProps
      * @returns {*}
      */
-    renderCard = (props) => {
+    renderCard = (cardProps) => {
 
-        if(props.type === "text") {
+        if(cardProps.type === "text") {
             return (
-                <TextCard text={props.text} date={props.date}/>
+                <TextCard text={cardProps.text} date={cardProps.date} {...this.props}/>
             )
         }
-        else if(props.type === "picture"){
+        else if(cardProps.type === "picture"){
             return (
-                <PictureCard background={props.image} text={props.text} date={props.date}/>
+                <PictureCard background={cardProps.image} text={cardProps.text} date={cardProps.date}/>
             )
         }
 
@@ -121,6 +121,8 @@ export default class Home extends Component<Props> {
     render() {
         return (
             <View style={LayoutStyles.appContainer}>
+
+                <NormalNav/>
 
                 <Modal
                     animationType="fade"
