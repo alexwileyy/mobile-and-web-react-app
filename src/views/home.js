@@ -6,6 +6,9 @@ import {TextColour, BrandYellow} from "../variables";
 
 import { applyLetterSpacing } from '../helpers';
 
+// Components
+import TextCard from '../components/TextCard';
+
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Oct", "Nov", "Dec"];
 
@@ -64,9 +67,13 @@ export default class Home extends Component<Props> {
         this.setState(state => ({modalVisible: !state.modalVisible}))
     };
 
+    /**
+     * Fires upon scroll
+     * @param scroll
+     */
     handleScroll = (scroll) => {
         this.props.toggleDateHeader(true);
-        if(scroll.nativeEvent.contentOffset.y >= 40) {
+        if(scroll.nativeEvent.contentOffset.y >= 120) {
             this.props.toggleDateHeader(true);
         } else {
             this.props.toggleDateHeader(false);
@@ -112,46 +119,7 @@ export default class Home extends Component<Props> {
                     </View>
 
                     <View>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
-                        <Text style={styles.momentsTitle}>Moments</Text>
+                        <TextCard/>
                     </View>
 
                 </ScrollView>
@@ -167,7 +135,8 @@ const styles = StyleSheet.create({
         paddingRight: 50
     },
     timelimeScopeContainer: {
-        marginTop: 30
+        marginTop: 30,
+        marginBottom: 45
     },
     timelineScopeText: {
         fontSize: 12
