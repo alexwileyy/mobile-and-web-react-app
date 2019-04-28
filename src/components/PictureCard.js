@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
+
 import LinearGradient from 'react-native-linear-gradient';
 
 import {TextColour, months} from "../variables";
+import PropTypes from "prop-types";
+import TextCard from "./TextCard";
 
 type Props = {};
-export default class TextCard extends Component<Props> {
+export default class PictureCard extends Component<Props> {
 
     constructor(props) {
         super(props);
@@ -16,6 +18,7 @@ export default class TextCard extends Component<Props> {
     render(){
 
         const {
+            background,
             text,
             date
         } = this.props;
@@ -61,7 +64,8 @@ const styles = StyleSheet.create({
     }
 });
 
-TextCard.propTypes = {
+PictureCard.propTypes = {
+    background: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     date: PropTypes.instanceOf(Date).isRequired
 };

@@ -119,7 +119,9 @@ export default class Home extends Component<Props> {
                     </View>
 
                     <View>
-                        <TextCard/>
+                        <TextCard text={"A kind man held the door open"}
+                                  date={new Date()}
+                        />
                     </View>
 
                 </ScrollView>
