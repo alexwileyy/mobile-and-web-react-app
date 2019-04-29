@@ -14,7 +14,7 @@ export default class TextCard extends Component<Props> {
     }
 
     openMoment = () => {
-        this.props.navigation.navigate('TextMoment')
+        this.props.navigation.navigate('TextMoment', {...this.props})
     };
 
     render(){
@@ -67,5 +67,11 @@ const styles = StyleSheet.create({
 
 TextCard.propTypes = {
     text: PropTypes.string.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired
+    date: PropTypes.instanceOf(Date).isRequired,
+    description: PropTypes.string.isRequired,
+    isFavourite: PropTypes.bool
+};
+
+TextCard.defaultProps = {
+    isFavourite: false
 };

@@ -10,6 +10,10 @@ export default class MomentNav extends Component<props> {
         super(props);
     }
 
+    back = () => {
+        this.props.navigation.goBack();
+    };
+
     render(){
 
         const {
@@ -18,7 +22,7 @@ export default class MomentNav extends Component<props> {
 
         return (
             <View style={styles.nav}>
-                <TouchableOpacity onPress={()=>{this.props.navigation.goBack()}}>
+                <TouchableOpacity onPress={this.back}>
                     <Image source={require('../assets/img/icon/back-arrow.png')} style={styles.backArrow}/>
                 </TouchableOpacity>
                 <Text style={styles.headerText}>{text}</Text>
@@ -38,11 +42,13 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontFamily: "Catamaran-Bold",
-        color: "white"
+        color: "white",
+        fontSize: 18
     },
     backArrow: {
         height: 15,
-        width: 20
+        width: 20,
+        zIndex: 1
     }
 });
 

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert} from 'react-native';
+import {StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert, Animated} from 'react-native';
 import LayoutStyles from '../styles/layout';
 
-import {TextColour, BrandYellow} from "../variables";
+import {TextColour, BrandYellow, containerPadding} from "../variables";
 
 import { applyLetterSpacing } from '../helpers';
 
@@ -20,22 +20,55 @@ export default class Home extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {
+            showDateHeader: false,
+            fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
             showTimelineDate: false,
             timelineDate: new Date(),
             modalVisible: false,
             displayDate: "Today",
             cards: [
                 {
-                    text: "A king man held the door open for me",
+                    text: "A kind man held the door open for me",
                     type: "text",
-                    date: new Date()
+                    date: new Date(),
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
+                    isFavourite: false
                 },
                 {
                     text: "The barista who made my coffee smiled at me",
                     type: "picture",
                     date: new Date(),
-                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80"
-                }
+                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                },
+                {
+                    text: "The barista who made my coffee smiled at me",
+                    type: "picture",
+                    date: new Date(),
+                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                },
+                {
+                    text: "The barista who made my coffee smiled at me",
+                    type: "picture",
+                    date: new Date(),
+                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                },
+                {
+                    text: "The barista who made my coffee smiled at me",
+                    type: "picture",
+                    date: new Date(),
+                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                },
+                {
+                    text: "The barista who made my coffee smiled at me",
+                    type: "picture",
+                    date: new Date(),
+                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                },
             ]
         }
     }
@@ -86,11 +119,11 @@ export default class Home extends Component<Props> {
      * @param scroll
      */
     handleScroll = (scroll) => {
-        this.props.toggleDateHeader(true);
+        this.toggleDateHeader(true);
         if(scroll.nativeEvent.contentOffset.y >= 120) {
-            this.props.toggleDateHeader(true);
+            this.toggleDateHeader(true);
         } else {
-            this.props.toggleDateHeader(false);
+            this.toggleDateHeader(false);
         }
     };
 
@@ -103,7 +136,11 @@ export default class Home extends Component<Props> {
 
         if(cardProps.type === "text") {
             return (
-                <TextCard text={cardProps.text} date={cardProps.date} {...this.props}/>
+                <TextCard text={cardProps.text}
+                          date={cardProps.date}
+                          description={cardProps.description}
+                          isFavourite={cardProps.isFavourite}
+                          {...this.props}/>
             )
         }
         else if(cardProps.type === "picture"){
@@ -115,6 +152,23 @@ export default class Home extends Component<Props> {
     };
 
     /**
+     * Toggles whether to show the date header or now
+     * @param toggle
+     */
+    toggleDateHeader = (toggle) => {
+
+        this.setState(state => ({showDateHeader: toggle}), ()=>{
+            Animated.timing(                  // Animate over time
+                this.state.fadeAnim,            // The animated value to drive
+                {
+                    toValue: toggle ? 1 : 0,                   // Animate to opacity: 1 (opaque)
+                    duration: 200,              // Make it take a while
+                }
+            ).start();
+        });
+    };
+
+    /**
      * Render the component
      * @returns {*}
      */
@@ -123,6 +177,21 @@ export default class Home extends Component<Props> {
             <View style={LayoutStyles.appContainer}>
 
                 <NormalNav/>
+
+                <Animated.View          // Special animatable View
+                    style={{
+                        width: "110%",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        opacity: this.state.fadeAnim,         // Bind opacity to animated value
+                    }}
+                >
+                    <View style={styles.navTop}>
+                        <Text style={styles.navTopText}>Monday 28 April</Text>
+                    </View>
+                </Animated.View>
 
                 <Modal
                     animationType="fade"
@@ -145,7 +214,7 @@ export default class Home extends Component<Props> {
                     </View>
                 </Modal>
 
-                <ScrollView scrollEventThrottle={100} onScrollBeginDrag={this.handleScroll} onScroll={this.handleScroll} onScrollEndDrag={this.handleScroll}>
+                <ScrollView style={styles.scrollView} scrollEventThrottle={100} onScrollBeginDrag={this.handleScroll} onScroll={this.handleScroll} onScrollEndDrag={this.handleScroll}>
 
                     <View style={styles.timelimeScopeContainer}>
                         <Text style={styles.timelineScopeText}>{applyLetterSpacing("VIEWING MOMENTS FOR:", 2)}</Text>
@@ -220,5 +289,25 @@ const styles = StyleSheet.create({
     },
     timelineCard: {
         marginBottom: 20
-    }
+    },
+    scrollView: {
+        marginBottom: 100
+    },
+    navTop: {
+        backgroundColor: BrandYellow,
+        width: "100%",
+        paddingTop: 50,
+        paddingLeft: containerPadding,
+        paddingRight: containerPadding,
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 1,
+    },
+    navTopText: {
+        color: "white",
+        fontSize: 30,
+        fontFamily: "Catamaran-Bold",
+    },
 });
