@@ -16,7 +16,7 @@ export default class CreateMomentButton extends Component<Props> {
 
     render(){
         return (
-            <TouchableOpacity activeOpacity={1}>
+            <TouchableOpacity activeOpacity={1} onPress={()=>{this.props.navigation.navigate("NewMoment")}}>
                 <Image style={styles.button} source={NewMomentButton}/>
             </TouchableOpacity>
         )

@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {Dimensions, StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert, Animated} from 'react-native';
 import LayoutStyles from '../styles/layout';
 
+import {YellowBox} from 'react-native';
+YellowBox.ignoreWarnings(['Warning: ViewPagerAndroid', 'Warning: Slider']);
+
 import {TextColour, BrandYellow, containerPadding} from "../variables";
 
 import { applyLetterSpacing } from '../helpers';
@@ -79,7 +82,8 @@ export default class Home extends Component<Props> {
                     isFavourite: false
                 },
             ]
-        }
+        };
+
     }
 
     /**
@@ -201,7 +205,9 @@ export default class Home extends Component<Props> {
         return (
             <View style={LayoutStyles.appContainer}>
 
-                <NormalNav/>
+                <View style={styles.normalNav}>
+                    <NormalNav/>
+                </View>
 
                 <Animated.View          // Special animatable View
                     style={{
@@ -264,8 +270,8 @@ export default class Home extends Component<Props> {
 
                 </ScrollView>
 
-                <View style={styles.newMomentContainer} onLayout={(event) => console.log(this)}>
-                    <CreateMomentButton style={{flex: 1}}/>
+                <View style={styles.newMomentContainer}>
+                    <CreateMomentButton style={{flex: 1}} {...this.props}/>
                 </View>
 
             </View>
@@ -346,5 +352,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: "center"
+    },
+    normalNav: {
+        marginTop: 70,
+        marginBottom: 20
     }
 });
