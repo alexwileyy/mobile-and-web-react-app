@@ -3,6 +3,9 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import PropTypes from 'prop-types';
 import {containerPadding} from "../variables";
 
+import BlackArrow from "../assets/img/icon/back-arrow-black.png"
+import WhiteArrow from "../assets/img/icon/back-arrow.png"
+
 type props = {};
 export default class MomentNav extends Component<props> {
 
@@ -17,15 +20,18 @@ export default class MomentNav extends Component<props> {
     render(){
 
         const {
-            text
+            text,
+            theme
         } = this.props;
+
+        const arrow = theme === "black" ? BlackArrow : WhiteArrow;
 
         return (
             <View style={styles.nav}>
                 <TouchableOpacity onPress={this.back}>
-                    <Image source={require('../assets/img/icon/back-arrow.png')} style={styles.backArrow}/>
+                    <Image source={arrow} style={styles.backArrow}/>
                 </TouchableOpacity>
-                <Text style={styles.headerText}>{text}</Text>
+                <Text style={[styles.headerText, {color: theme === "black" ? "black" : "white"}]}>{text}</Text>
             </View>
         )
     }
@@ -52,7 +58,11 @@ const styles = StyleSheet.create({
     }
 });
 
+MomentNav.defaultProps = {
+    theme: "white"
+};
 
 MomentNav.propTypes = {
-    text: PropTypes.string.isRequired
+    text: PropTypes.string.isRequired,
+    theme: PropTypes.string
 };

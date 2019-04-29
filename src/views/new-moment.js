@@ -15,6 +15,7 @@ export default class NewMoment extends Component<Props> {
     launchMoment = (type) => {
         switch (type) {
             case "text":
+                this.props.navigation.navigate("NewTextMoment");
                 break;
             case "picture":
                 break;
