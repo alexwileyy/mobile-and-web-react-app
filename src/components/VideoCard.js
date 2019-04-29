@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 type Props = {};
 
-export default class PictureCard extends Component<Props> {
+export default class VideoCard extends Component<Props> {
 
     constructor(props) {
         super(props);
@@ -14,7 +14,7 @@ export default class PictureCard extends Component<Props> {
     }
 
     openMoment = () => {
-        this.props.navigation.navigate('PictureMoment', {...this.props})
+        this.props.navigation.navigate('VideoMoment', {...this.props})
     };
 
     render(){
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     }
 });
 
-PictureCard.propTypes = {
+VideoCard.propTypes = {
     background: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     date: PropTypes.instanceOf(Date).isRequired

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, Dimensions} from 'react-native';
+import {StyleSheet, View, Text, Image, TouchableOpacity, Dimensions} from 'react-native';
 import Fav from "../assets/img/favourite.png";
 import NonFav from "../assets/img/non-favourite.png";
 import LinearGradient from "./text-moment";
@@ -7,8 +7,10 @@ import {FormatDate} from "../helpers";
 import {containerPadding} from "../variables";
 import MomentNav from '../components/MomentNav';
 
+import Video from 'react-native-video';
+
 type props = {};
-export default class PictureMoment extends Component<props> {
+export default class VideoMoment extends Component<props> {
 
     constructor(props) {
         super(props);
@@ -44,13 +46,16 @@ export default class PictureMoment extends Component<props> {
         } = this.state;
 
         return (
-            <ImageBackground source={{uri: background}} style={styles.background}>
+            <View style={styles.background}>
 
-                <View style={styles.test}>
-                    <MomentNav text={"Picture Moment"} {...this.props}/>
-                </View>
+                <Video repeat={true} resizeMode="cover" source={{uri: "http://www.exit109.com/~dnn/clips/RW20seconds_1.mp4"}} style={styles.video} />
 
                 <View style={styles.overlay}></View>
+
+                <View style={styles.test}>
+                    <MomentNav text={"Video Moment"} {...this.props}/>
+                </View>
+
 
                 <View style={styles.content}>
                     <Text style={styles.title}>{text}</Text>
@@ -67,7 +72,7 @@ export default class PictureMoment extends Component<props> {
                 </View>
 
 
-            </ImageBackground>
+            </View>
         );
     }
 }
@@ -88,7 +93,8 @@ const styles = StyleSheet.create({
         width: "100%",
         flex: 1,
         flexDirection: "column",
-        paddingTop: 50
+        paddingTop: 50,
+        backgroundColor: "black"
     },
     content: {
         flex: 10,
@@ -128,6 +134,12 @@ const styles = StyleSheet.create({
         width: 115,
         height: 20,
         marginTop: 20
+    },
+    video: {
+        position: 'absolute',
+        width: "100%",
+        height: "120%",
+        top: 0,
+        left: 0,
     }
-
 });

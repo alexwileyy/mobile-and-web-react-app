@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {TextColour, months} from "../variables";
@@ -25,12 +25,12 @@ export default class TextCard extends Component<Props> {
         } = this.props;
 
         return(
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={this.openMoment} activeOpacity={0.8}>
                 <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#A8FF78', '#1CD8D2']} style={styles.linearGradient}>
                     <Text style={styles.cardDate}>{`${date.getDate()} ${months[date.getMonth() + 1]} @ ${date.getUTCHours()}:${date.getUTCMinutes()}`}</Text>
-                    <Text style={styles.cardText} onPress={this.openMoment}>{text}</Text>
+                    <Text style={styles.cardText}>{text}</Text>
                 </LinearGradient>
-            </View>
+            </TouchableOpacity>
         )
     }
 

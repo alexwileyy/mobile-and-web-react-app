@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert, Animated} from 'react-native';
+import {Dimensions, StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert, Animated} from 'react-native';
 import LayoutStyles from '../styles/layout';
 
 import {TextColour, BrandYellow, containerPadding} from "../variables";
@@ -10,9 +10,13 @@ import { applyLetterSpacing } from '../helpers';
 import NormalNav from '../components/NormalNav'
 import TextCard from '../components/TextCard';
 import PictureCard from '../components/PictureCard';
+import VideoCard from '../components/VideoCard';
+import CreateMomentButton from "../components/CreateMomentButton";
 
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Oct", "Nov", "Dec"];
+
+let newMomentButtonWidth;
 
 type Props = {};
 export default class Home extends Component<Props> {
@@ -38,17 +42,17 @@ export default class Home extends Component<Props> {
                     text: "The barista who made my coffee smiled at me",
                     type: "picture",
                     date: new Date(),
-                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
+                    image: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80",
                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
                     isFavourite: false
                 },
                 {
-                    text: "The barista who made my coffee smiled at me",
-                    type: "picture",
+                    text: "I created a cool little video snippet",
+                    type: "video",
                     date: new Date(),
-                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
+                    image: "https://images.unsplash.com/photo-1532456164788-984c62717cf8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80",
                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
-                    isFavourite: false
+                    isFavourite: true
                 },
                 {
                     text: "The barista who made my coffee smiled at me",
@@ -159,7 +163,17 @@ export default class Home extends Component<Props> {
                 />
             )
         }
-
+        else if(cardProps.type === "video"){
+            return (
+                <VideoCard background={cardProps.image}
+                             text={cardProps.text}
+                             date={cardProps.date}
+                             isFavourite={cardProps.isFavourite}
+                             description={cardProps.description}
+                             {...this.props}
+                />
+            )
+        }
     };
 
     /**
@@ -250,6 +264,10 @@ export default class Home extends Component<Props> {
 
                 </ScrollView>
 
+                <View style={styles.newMomentContainer} onLayout={(event) => console.log(this)}>
+                    <CreateMomentButton style={{flex: 1}}/>
+                </View>
+
             </View>
         );
     }
@@ -321,4 +339,12 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontFamily: "Catamaran-Bold",
     },
+    newMomentContainer: {
+        position: 'absolute',
+        width: Dimensions.get("window").width,
+        bottom: 95,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: "center"
+    }
 });

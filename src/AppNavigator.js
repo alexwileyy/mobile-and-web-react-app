@@ -6,6 +6,7 @@ import Home from '../src/views/home';
 import NewMoment from '../src/views/new-moment';
 import TextMoment from './views/text-moment';
 import PictureMoment from './views/picture-moment';
+import VideoMoment from './views/video-moment';
 
 // export const NavStack = createAppContainer(AppNavigator);
 
@@ -24,6 +25,9 @@ export default function GetNavStack(props){
         },
         PictureMoment: {
             screen: (navProps) => <PictureMoment {...navProps} {...props} />
+        },
+        VideoMoment: {
+            screen: (navProps) => <VideoMoment {...navProps} {...props} />
         },
 
     },{
