@@ -39,35 +39,40 @@ export default class Home extends Component<Props> {
                     type: "picture",
                     date: new Date(),
                     image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
+                    isFavourite: false
                 },
                 {
                     text: "The barista who made my coffee smiled at me",
                     type: "picture",
                     date: new Date(),
                     image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
+                    isFavourite: false
                 },
                 {
                     text: "The barista who made my coffee smiled at me",
                     type: "picture",
                     date: new Date(),
                     image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
+                    isFavourite: false
                 },
                 {
                     text: "The barista who made my coffee smiled at me",
                     type: "picture",
                     date: new Date(),
                     image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
+                    isFavourite: false
                 },
                 {
                     text: "The barista who made my coffee smiled at me",
                     type: "picture",
                     date: new Date(),
                     image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula."
+                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
+                    isFavourite: false
                 },
             ]
         }
@@ -145,7 +150,13 @@ export default class Home extends Component<Props> {
         }
         else if(cardProps.type === "picture"){
             return (
-                <PictureCard background={cardProps.image} text={cardProps.text} date={cardProps.date}/>
+                <PictureCard background={cardProps.image}
+                             text={cardProps.text}
+                             date={cardProps.date}
+                             isFavourite={cardProps.isFavourite}
+                             description={cardProps.description}
+                             {...this.props}
+                />
             )
         }
 

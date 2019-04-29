@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, ImageBackground} from 'react-native';
+import {StyleSheet, View, Text, ImageBackground, TouchableOpacity} from 'react-native';
 
 import {months, BrandYellow} from "../variables";
 import PropTypes from "prop-types";
@@ -13,6 +13,11 @@ export default class PictureCard extends Component<Props> {
         this.state = {};
     }
 
+    openMoment = () => {
+        console.log(this.props);
+        this.props.navigation.navigate('PictureMoment', {...this.props})
+    };
+
     render(){
 
         const {
@@ -22,12 +27,12 @@ export default class PictureCard extends Component<Props> {
         } = this.props;
 
         return(
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={this.openMoment}>
                 <ImageBackground source={{uri: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80"}} style={styles.background}>
                     <Text style={styles.cardDate}>{`${date.getDate()} ${months[date.getMonth() + 1]} @ ${date.getUTCHours()}:${date.getUTCMinutes()}`}</Text>
                     <Text style={styles.cardText}>{text}</Text>
                 </ImageBackground>
-            </View>
+            </TouchableOpacity>
         )
     }
 
