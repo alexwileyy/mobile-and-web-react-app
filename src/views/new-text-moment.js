@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity, TextInput, DatePickerIOS, Button} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity, TextInput, DatePickerIOS, Button, Animated, ScrollView} from 'react-native';
 import MomentNav from "../components/MomentNav";
 import {containerPadding, BrandYellow} from "../variables";
 import { FormatDate, FormatTime } from "../helpers"
@@ -26,6 +26,8 @@ export default class NewTextMoment extends Component<Props> {
             momentDescription: "",
             momentDate: new Date(),
             momentTime: new Date(),
+            optionsOpen: false,
+            optionsHeight: new Animated.Value(0)
         };
         this.onMomenCreate = this.props.navigation.getParam("onMomentCreate");
     }
@@ -50,6 +52,24 @@ export default class NewTextMoment extends Component<Props> {
             return this.setState({showDateModal: val})
         }
         this.setState(state => ({showDateModal: !state.showDateModal}))
+    };
+
+    /**
+     * Toggle options tab
+     * @param val
+     */
+    toggleOptions = (val) => {
+        if(val && typeof val === "string"){
+            return this.setState({optionsOpen: val})
+        }
+        this.setState(state => ({optionsOpen: !state.optionsOpen}));
+        Animated.timing(
+            this.state.optionsHeight,
+            {
+                toValue: this.state.optionsOpen ? 0 : 165,
+                duration: 200
+            }
+        ).start();
     };
 
     /**
@@ -125,32 +145,49 @@ export default class NewTextMoment extends Component<Props> {
 
                 <View style={styles.content}>
 
-                    <View style={styles.contentInput}>
-                        <TextInput style={styles.titleInput}
-                                   placeholder={"Start typing your moment title"}
-                                   placeholderColor={"#E0E0E0"}
-                                   numberOfLines={10}
-                                   multiline={true}
-                                   allowFontScaling={true}
-                                   onChangeText={this.updateMomentTitle}
-                                   value={this.state.momentTitle}
+                    <ScrollView>
 
-                        />
-                        <TextInput style={styles.bodyInput}
-                                   placeholder={"Start typing your moment description"}
-                                   placeholderColor={"#E0E0E0"}
-                                   numberOfLines={1}
-                                   multiline={true}
-                                   allowFontScaling={true}
-                                   onChangeText={this.updateMomentDesc}
-                                   value={this.state.momentDescription}
+                        <View style={styles.contentInput}>
+                            <TextInput style={styles.titleInput}
+                                       placeholder={"Start typing your moment title"}
+                                       placeholderColor={"#E0E0E0"}
+                                       numberOfLines={10}
+                                       multiline={true}
+                                       allowFontScaling={true}
+                                       onChangeText={this.updateMomentTitle}
+                                       value={this.state.momentTitle}
 
-                        />
-                    </View>
+                            />
+                            <TextInput style={styles.bodyInput}
+                                       placeholder={"Start typing your moment description"}
+                                       placeholderColor={"#E0E0E0"}
+                                       numberOfLines={1}
+                                       multiline={true}
+                                       allowFontScaling={true}
+                                       onChangeText={this.updateMomentDesc}
+                                       value={this.state.momentDescription}
 
-                    <View style={styles.momentOptions}>
+                            />
+                        </View>
+
+                    </ScrollView>
+
+
+                </View>
+
+                <View style={styles.momentOptions}>
+
+                    <TouchableOpacity style={styles.momentOptionsHeader} onPress={this.toggleOptions} activeOpacity={1}>
                         <Text style={styles.momentOptionsTitle}>MOMENT OPTIONS</Text>
+                        <Text>{this.state.optionsOpen ? '-' : '+'}</Text>
+                    </TouchableOpacity>
 
+                    <Animated.View          // Special animatable View
+                        style={{
+                            height: this.state.optionsHeight,
+                            overflow: 'hidden'
+                        }}
+                    >
                         <TouchableOpacity style={styles.optionContainer} activeOpacity={1} onPress={()=>{this.toggleDateModal()}}>
                             <Image source={CalendarIcon} style={styles.optionIcon}/>
                             <Text style={styles.optionContent}>{FormatDate(this.state.momentDate, false)}</Text>
@@ -160,15 +197,15 @@ export default class NewTextMoment extends Component<Props> {
                             <Image source={TimeIcon} style={styles.optionIcon}/>
                             <Text style={styles.optionContent}>{FormatTime(this.state.momentTime, false)}</Text>
                         </TouchableOpacity>
+                    </Animated.View>
 
-                        <TouchableOpacity style={styles.createMomentButton} activeOpacity={1} onPress={this.createMoment}>
-                            <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#EFD229', '#F2C04C']} style={styles.buttonGradient}>
-                                <Text style={styles.buttonText}>CREATE MOMENT</Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                    </View>
-
+                    <TouchableOpacity style={styles.createMomentButton} activeOpacity={1} onPress={this.createMoment}>
+                        <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#EFD229', '#F2C04C']} style={styles.buttonGradient}>
+                            <Text style={styles.buttonText}>CREATE MOMENT</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
                 </View>
+
 
             </View>
         );
@@ -204,15 +241,24 @@ const styles = StyleSheet.create({
     },
     momentOptions: {
         backgroundColor: "#FAF8F8",
-        paddingTop: 20,
-        // paddingBottom: 20,
+        paddingTop: 10,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        width: "100%"
     },
-    momentOptionsTitle: {
-        fontSize: 20,
-        color: "#606060",
-        fontFamily: "Catamaran-SemiBold",
+    momentOptionsHeader: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingLeft: containerPadding,
         paddingRight: containerPadding,
+    },
+    momentOptionsTitle: {
+        fontSize: 15,
+        color: "#606060",
+        fontFamily: "Catamaran-SemiBold",
     },
     optionContainer: {
         flexDirection: "row",
