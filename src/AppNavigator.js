@@ -9,7 +9,7 @@ import PictureMoment from './views/picture-moment';
 import VideoMoment from './views/video-moment';
 
 import NewTextMoment from './views/new-text-moment';
-// import VideoMoment from './views/video-moment';
+import NewPictureMoment from './views/new-picture-moment';
 // import VideoMoment from './views/video-moment';
 // import VideoMoment from './views/video-moment';
 
@@ -36,6 +36,9 @@ export default function GetNavStack(props){
         },
         NewTextMoment: {
             screen: (navProps) => <NewTextMoment {...navProps} {...props} />
+        },
+        NewPictureMoment: {
+            screen: (navProps) => <NewPictureMoment {...navProps} {...props} />
         }
 
     },{

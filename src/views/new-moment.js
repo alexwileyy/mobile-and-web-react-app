@@ -19,6 +19,7 @@ export default class NewMoment extends Component<Props> {
                 this.props.navigation.navigate("NewTextMoment", {onMomentCreate: this.props.navigation.getParam("onMomentCreate")});
                 break;
             case "picture":
+                this.props.navigation.navigate("NewPictureMoment", {onMomentCreate: this.props.navigation.getParam("onMomentCreate")});
                 break;
             case "video":
                 break;
