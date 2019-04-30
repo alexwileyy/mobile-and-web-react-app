@@ -36,7 +36,7 @@ export default function GetNavStack(props){
         },
         NewTextMoment: {
             screen: (navProps) => <NewTextMoment {...navProps} {...props} />
-        },
+        }
 
     },{
         initialRouteName: 'Home',

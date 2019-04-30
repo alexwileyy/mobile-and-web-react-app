@@ -198,6 +198,24 @@ export default class Home extends Component<Props> {
     };
 
     /**
+     * Adds a moment to the timeline
+     * @param type
+     * @param title
+     * @param description
+     * @param date
+     * @param time
+     */
+    addMomentToTimeline = ({type, title, description, date, time}) => {
+        console.log({
+            type,
+            title,
+            description,
+            date,
+            time
+        })
+    };
+
+    /**
      * Render the component
      * @returns {*}
      */
@@ -271,7 +289,7 @@ export default class Home extends Component<Props> {
                 </ScrollView>
 
                 <View style={styles.newMomentContainer}>
-                    <CreateMomentButton style={{flex: 1}} {...this.props}/>
+                    <CreateMomentButton style={{flex: 1}} onMomentCreate={this.addMomentToTimeline} {...this.props}/>
                 </View>
 
             </View>

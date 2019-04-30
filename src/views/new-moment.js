@@ -8,6 +8,7 @@ import TextMoment from '../assets/img/text-moment.png';
 import PictureMoment from '../assets/img/picture-moment.png';
 import VideoMoment from '../assets/img/video-moment.png';
 import AudioMoment from '../assets/img/audio-moment.png';
+import LinearGradient from "./text-moment";
 
 type Props = {};
 export default class NewMoment extends Component<Props> {
@@ -15,7 +16,7 @@ export default class NewMoment extends Component<Props> {
     launchMoment = (type) => {
         switch (type) {
             case "text":
-                this.props.navigation.navigate("NewTextMoment");
+                this.props.navigation.navigate("NewTextMoment", {onMomentCreate: this.props.navigation.getParam("onMomentCreate")});
                 break;
             case "picture":
                 break;
@@ -52,6 +53,7 @@ export default class NewMoment extends Component<Props> {
                         <TouchableOpacity style={styles.actionContainer} onPress={()=>{this.launchMoment("video")}}>
                             <Image style={styles.action} source={VideoMoment}/>
                         </TouchableOpacity>
+
                     </View>
 
                 </View>
