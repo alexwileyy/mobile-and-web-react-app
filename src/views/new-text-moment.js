@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity, TextInput, DatePickerIOS, Button, Animated, ScrollView} from 'react-native';
+import firebase from "react-native-firebase";
 import MomentNav from "../components/MomentNav";
 import {containerPadding, BrandYellow} from "../variables";
 import { FormatDate, FormatTime } from "../helpers"
@@ -104,14 +105,51 @@ export default class NewTextMoment extends Component<Props> {
         this.setState({momentDescription: val})
     };
 
+    /**
+     * Creates a new moment adding it to the database
+     */
     createMoment = () => {
-        this.onMomenCreate({
+        const body = {
             type: "text",
             title: this.state.momentTitle,
-            description: this.state.momentDescription,
+            body: this.state.momentDescription,
             time: this.state.momentTime,
             date: this.state.momentDate,
-        })
+            location: "temp",
+            isFavourite: false,
+            mediaUrl: false
+        };
+        firebase.auth().currentUser.getIdToken(false).then((token) => {
+            fetch('http://localhost:3000/moments', {
+                method: 'post',
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": token
+                },
+                body: JSON.stringify(body)
+            }).then(result => {
+                if(result){
+                    this.onMomenCreate({
+                        type: "text",
+                        text: this.state.momentTitle,
+                        description: this.state.momentDescription,
+                        time: this.state.momentTime,
+                        date: this.state.momentDate,
+                        location: "temp",
+                        isFavourite: false,
+                        mediaUrl: false
+                    });
+                    this.props.navigation.popToTop();
+                } else {
+                    alert("Error whilst creating moment.");
+                }
+            }).catch(err => {
+                    console.log(err);
+                });
+        }).catch(function(error) {
+            console.log(error);
+            alert("An error occurred whilst authenticating you.")
+        });
     };
 
     render() {

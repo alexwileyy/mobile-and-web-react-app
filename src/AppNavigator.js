@@ -13,6 +13,8 @@ import NewPictureMoment from './views/new-picture-moment';
 // import VideoMoment from './views/video-moment';
 // import VideoMoment from './views/video-moment';
 
+import Login from './views/login';
+
 // export const NavStack = createAppContainer(AppNavigator);
 
 
@@ -39,7 +41,10 @@ export default function GetNavStack(props){
         },
         NewPictureMoment: {
             screen: (navProps) => <NewPictureMoment {...navProps} {...props} />
-        }
+        },
+        Login: {
+            screen: (navProps) => <Login {...navProps} {...props} />
+        },
 
     },{
         initialRouteName: 'Home',

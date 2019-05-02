@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Dimensions, StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert, Animated} from 'react-native';
 import LayoutStyles from '../styles/layout';
-
+import firebase from 'react-native-firebase';
 import {YellowBox} from 'react-native';
 YellowBox.ignoreWarnings(['Warning: ViewPagerAndroid', 'Warning: Slider']);
 
@@ -15,6 +15,9 @@ import TextCard from '../components/TextCard';
 import PictureCard from '../components/PictureCard';
 import VideoCard from '../components/VideoCard';
 import CreateMomentButton from "../components/CreateMomentButton";
+
+// Import login component
+import Login from "../views/login";
 
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Oct", "Nov", "Dec"];
@@ -81,9 +84,15 @@ export default class Home extends Component<Props> {
                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
                     isFavourite: false
                 },
-            ]
+            ],
+            user: firebase.auth().currentUser || props.navigation.getParam("user") || null
         };
+    }
 
+    componentDidMount(): void {
+        firebase.auth().onAuthStateChanged((user) => {
+            this.setState({ user });
+        });
     }
 
     /**
@@ -199,20 +208,24 @@ export default class Home extends Component<Props> {
 
     /**
      * Adds a moment to the timeline
-     * @param type
-     * @param title
-     * @param description
-     * @param date
-     * @param time
+     * @param moment
      */
-    addMomentToTimeline = ({type, title, description, date, time}) => {
-        console.log({
-            type,
-            title,
-            description,
-            date,
-            time
-        })
+    addMomentToTimeline = (moment) => {
+        console.log(moment)
+        const moments = this.state.cards;
+        console.log({cards: [{...moment}, ...moments]});
+        this.setState(state => ({cards: [{...moment}, ...moments]}))
+    };
+
+    /**
+     * Logs a user out of the application
+     */
+    logout = () => {
+        firebase.auth().signOut()
+            .then(res => {
+                console.log(res);
+                this.setState({user: null})
+            })
     };
 
     /**
@@ -220,27 +233,32 @@ export default class Home extends Component<Props> {
      * @returns {*}
      */
     render() {
+
+        if(!this.state.user) {
+            return <Login {...this.props}/>
+        }
+
         return (
             <View style={LayoutStyles.appContainer}>
 
                 <View style={styles.normalNav}>
-                    <NormalNav/>
+                    <NormalNav profileIcon={this.state.user._user.photoURL} logoutAction={this.logout}/>
                 </View>
 
-                <Animated.View          // Special animatable View
-                    style={{
-                        width: "110%",
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        opacity: this.state.fadeAnim,         // Bind opacity to animated value
-                    }}
-                >
-                    <View style={styles.navTop}>
-                        <Text style={styles.navTopText}>Monday 28 April</Text>
-                    </View>
-                </Animated.View>
+                {/*<Animated.View          // Special animatable View*/}
+                    {/*style={{*/}
+                        {/*width: "110%",*/}
+                        {/*position: "absolute",*/}
+                        {/*top: 0,*/}
+                        {/*left: 0,*/}
+                        {/*right: 0,*/}
+                        {/*opacity: this.state.fadeAnim,         // Bind opacity to animated value*/}
+                    {/*}}*/}
+                {/*>*/}
+                    {/*<View style={styles.navTop}>*/}
+                        {/*<Text style={styles.navTopText}>Monday 28 April</Text>*/}
+                    {/*</View>*/}
+                {/*</Animated.View>*/}
 
                 <Modal
                     animationType="fade"

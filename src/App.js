@@ -9,7 +9,7 @@
 import React, {Component} from 'react';
 import {Animated, Platform, StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
-import GetNavStack, {NavStack} from './AppNavigator';
+import GetNavStack from './AppNavigator';
 import {BrandYellow, containerPadding} from "./variables";
 
 const instructions = Platform.select({
