@@ -5,6 +5,7 @@ import {containerPadding} from "../variables";
 
 import BlackArrow from "../assets/img/icon/back-arrow-black.png"
 import WhiteArrow from "../assets/img/icon/back-arrow.png"
+import MomentIcon from "../assets/img/icon/menu.png";
 
 type props = {};
 export default class MomentNav extends Component<props> {
@@ -15,6 +16,12 @@ export default class MomentNav extends Component<props> {
 
     back = () => {
         this.props.navigation.goBack();
+    };
+
+    actionMenuPress = () => {
+        if(this.props.onActionMenuPress){
+            this.props.onActionMenuPress();
+        }
     };
 
     render(){
@@ -31,7 +38,10 @@ export default class MomentNav extends Component<props> {
                 <TouchableOpacity onPress={this.back}>
                     <Image source={arrow} style={styles.backArrow}/>
                 </TouchableOpacity>
-                <Text style={[styles.headerText, {color: theme === "black" ? "black" : "white"}]}>{text}</Text>
+                <TouchableOpacity style={styles.headerContent} onPress={this.actionMenuPress} activeOpacity={1}>
+                    <Text style={[styles.headerText, {color: theme === "black" ? "black" : "white"}]}>{text}</Text>
+                    {this.props.onActionMenuPress && <Image source={MomentIcon} style={styles.menuIcon}/>}
+                </TouchableOpacity>
             </View>
         )
     }
@@ -43,8 +53,16 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "flex-start",
         paddingLeft: containerPadding,
         paddingRight: containerPadding,
+    },
+    headerContent: {
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    menuIcon: {
+        marginLeft: 17
     },
     headerText: {
         fontFamily: "Catamaran-Bold",
@@ -64,5 +82,6 @@ MomentNav.defaultProps = {
 
 MomentNav.propTypes = {
     text: PropTypes.string.isRequired,
-    theme: PropTypes.string
+    theme: PropTypes.string,
+    onActionMenuPress: PropTypes.func
 };

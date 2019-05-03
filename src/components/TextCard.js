@@ -11,6 +11,7 @@ export default class TextCard extends Component<Props> {
     constructor(props) {
         super(props);
         this.state = {};
+        console.log(this.props);
     }
 
     openMoment = () => {
@@ -27,7 +28,7 @@ export default class TextCard extends Component<Props> {
         return(
             <TouchableOpacity style={styles.container} onPress={this.openMoment} activeOpacity={0.8}>
                 <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#A8FF78', '#1CD8D2']} style={styles.linearGradient}>
-                    <Text style={styles.cardDate}>{`${date.getDate()} ${months[date.getMonth() + 1]} @ ${date.getUTCHours()}:${date.getUTCMinutes()}`}</Text>
+                    <Text style={styles.cardDate}>{`${date.getDate()} ${months[date.getMonth()]} @ ${date.getUTCHours()}:${date.getUTCMinutes()}`}</Text>
                     <Text style={styles.cardText}>{text}</Text>
                 </LinearGradient>
             </TouchableOpacity>
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
 TextCard.propTypes = {
     text: PropTypes.string.isRequired,
     date: PropTypes.instanceOf(Date).isRequired,
+    time: PropTypes.instanceOf(Date).isRequired,
     description: PropTypes.string.isRequired,
     isFavourite: PropTypes.bool
 };

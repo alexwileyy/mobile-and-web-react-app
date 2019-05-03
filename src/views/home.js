@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions, StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert, Animated} from 'react-native';
+import {Dimensions, StyleSheet, View, Text, Button, ScrollView, DatePickerIOS, Modal, Alert, Animated,} from 'react-native';
 import LayoutStyles from '../styles/layout';
 import firebase from 'react-native-firebase';
 import {YellowBox} from 'react-native';
@@ -38,55 +38,49 @@ export default class Home extends Component<Props> {
             displayDate: "Today",
             cards: [
                 {
-                    text: "A kind man held the door open for me",
+                    type: "picture",
+                    text: "Coffee",
+                    description: "Hello world",
+                    date: new Date(),
+                    time: new Date(),
+                    isFavourite: false,
+                    image: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80"
+                },
+                {
                     type: "text",
+                    text: "Test",
+                    description: "Hello world",
                     date: new Date(),
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
+                    time: new Date(),
                     isFavourite: false
-                },
-                {
-                    text: "The barista who made my coffee smiled at me",
-                    type: "picture",
-                    date: new Date(),
-                    image: "https://images.unsplash.com/photo-1507133750040-4a8f57021571?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
-                    isFavourite: false
-                },
-                {
-                    text: "I created a cool little video snippet",
-                    type: "video",
-                    date: new Date(),
-                    image: "https://images.unsplash.com/photo-1532456164788-984c62717cf8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
-                    isFavourite: true
-                },
-                {
-                    text: "The barista who made my coffee smiled at me",
-                    type: "picture",
-                    date: new Date(),
-                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
-                    isFavourite: false
-                },
-                {
-                    text: "The barista who made my coffee smiled at me",
-                    type: "picture",
-                    date: new Date(),
-                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
-                    isFavourite: false
-                },
-                {
-                    text: "The barista who made my coffee smiled at me",
-                    type: "picture",
-                    date: new Date(),
-                    image: "https://images.unsplash.com/photo-1556209423-c0f478ab131a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80",
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur id est dolor. Curabitur non libero fermentum, egestas sapien sit amet, molestie felis. Aliquam ut metus suscipit, tincidunt ante et, gravida risus. Phasellus et nunc vel enim rhoncus porttitor ac a mauris. Phasellus pellentesque rhoncus vehicula.",
-                    isFavourite: false
-                },
+                }
             ],
             user: firebase.auth().currentUser || props.navigation.getParam("user") || null
         };
+    }
+
+    componentWillMount(): void {
+        if (firebase.auth().currentUser) {
+            firebase.auth().currentUser.getIdToken(false).then(token => {
+                fetch("http://localhost:3000/moments/today",
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                            "Authorization": token
+                        },
+                    })
+                    .then(res =>res.json())
+                    .then(data => {
+                        let moments = data.moments.map(moment => {
+                            moment.date = new Date(moment.date);
+                            moment.time = new Date(moment.time);
+                            return moment;
+                        });
+                        moments = moments.reverse();
+                        this.setState({cards: moments})
+                    })
+            });
+        }
     }
 
     componentDidMount(): void {
@@ -160,6 +154,7 @@ export default class Home extends Component<Props> {
             return (
                 <TextCard text={cardProps.text}
                           date={cardProps.date}
+                          time={cardProps.time}
                           description={cardProps.description}
                           isFavourite={cardProps.isFavourite}
                           {...this.props}/>
@@ -211,9 +206,8 @@ export default class Home extends Component<Props> {
      * @param moment
      */
     addMomentToTimeline = (moment) => {
-        console.log(moment)
+        console.log(moment);
         const moments = this.state.cards;
-        console.log({cards: [{...moment}, ...moments]});
         this.setState(state => ({cards: [{...moment}, ...moments]}))
     };
 
@@ -239,7 +233,7 @@ export default class Home extends Component<Props> {
         }
 
         return (
-            <View style={LayoutStyles.appContainer}>
+            <View style={{...styles.appContainer, ...LayoutStyles.appContainer}}>
 
                 <View style={styles.normalNav}>
                     <NormalNav profileIcon={this.state.user._user.photoURL} logoutAction={this.logout}/>
@@ -316,6 +310,12 @@ export default class Home extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+    appContainer: {
+        height: "100%",
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "space-between"
+    },
     container: {
         paddingLeft: 50,
         paddingRight: 50
@@ -362,7 +362,6 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     scrollView: {
-        marginBottom: 100
     },
     navTop: {
         backgroundColor: BrandYellow,
@@ -384,7 +383,7 @@ const styles = StyleSheet.create({
     newMomentContainer: {
         position: 'absolute',
         width: Dimensions.get("window").width,
-        bottom: 95,
+        bottom: 0,
         flex: 1,
         flexDirection: 'row',
         justifyContent: "center"

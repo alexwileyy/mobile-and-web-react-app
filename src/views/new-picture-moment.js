@@ -27,7 +27,8 @@ export default class NewPictureMoment extends Component<Props> {
             momentDate: new Date(),
             momentTime: new Date(),
             optionsOpen: false,
-            optionsHeight: new Animated.Value(0)
+            optionsHeight: new Animated.Value(0),
+            bodyActive: false
         };
         this.onMomenCreate = this.props.navigation.getParam("onMomentCreate");
     }
@@ -145,7 +146,11 @@ export default class NewPictureMoment extends Component<Props> {
 
                 <View style={styles.content}>
 
-                    <ScrollView>
+                    <ScrollView ref={ref => this.scrollView = ref}
+                                onContentSizeChange={(contentWidth, contentHeightt)=>{
+                                    this.scrollView.scrollToEnd({animated: true})
+                                }}
+                    >
 
                         <View style={styles.contentInput}>
                             <TouchableOpacity style={styles.addImageContainer}>
@@ -160,9 +165,11 @@ export default class NewPictureMoment extends Component<Props> {
                                        allowFontScaling={true}
                                        onChangeText={this.updateMomentTitle}
                                        value={this.state.momentTitle}
+                                       returnKeyType={"done"}
+                                       blurOnSubmit={true}
 
                             />
-                            <TextInput style={styles.bodyInput}
+                            <TextInput style={[styles.bodyInput], {paddingBottom: this.state.bodyActive ? 500 : 0}}
                                        placeholder={"Start typing your moment description"}
                                        placeholderColor={"#E0E0E0"}
                                        numberOfLines={1}
@@ -170,6 +177,10 @@ export default class NewPictureMoment extends Component<Props> {
                                        allowFontScaling={true}
                                        onChangeText={this.updateMomentDesc}
                                        value={this.state.momentDescription}
+                                       onEndEditing={()=>{this.setState({bodyActive: false})}}
+                                       onFocus={()=>{this.setState({bodyActive: true})}}
+                                       returnKeyType={"done"}
+                                       blurOnSubmit={true}
 
                             />
 

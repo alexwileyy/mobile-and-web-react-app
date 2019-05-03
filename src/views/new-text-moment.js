@@ -111,13 +111,13 @@ export default class NewTextMoment extends Component<Props> {
     createMoment = () => {
         const body = {
             type: "text",
-            title: this.state.momentTitle,
-            body: this.state.momentDescription,
+            text: this.state.momentTitle,
+            description: this.state.momentDescription,
             time: this.state.momentTime,
             date: this.state.momentDate,
             location: "temp",
             isFavourite: false,
-            mediaUrl: false
+            media: false
         };
         firebase.auth().currentUser.getIdToken(false).then((token) => {
             fetch('http://localhost:3000/moments', {
@@ -127,22 +127,17 @@ export default class NewTextMoment extends Component<Props> {
                     "Authorization": token
                 },
                 body: JSON.stringify(body)
-            }).then(result => {
-                if(result){
-                    this.onMomenCreate({
-                        type: "text",
-                        text: this.state.momentTitle,
-                        description: this.state.momentDescription,
-                        time: this.state.momentTime,
-                        date: this.state.momentDate,
-                        location: "temp",
-                        isFavourite: false,
-                        mediaUrl: false
-                    });
-                    this.props.navigation.popToTop();
-                } else {
-                    alert("Error whilst creating moment.");
-                }
+            }).then(jsonRes => jsonRes.json())
+                .then(result => {
+                    if(result){
+                        const moment = result.moment;
+                        moment.date = new Date(result.date);
+                        moment.time = new Date(result.time);
+                        this.onMomenCreate(moment);
+                        this.props.navigation.popToTop();
+                    } else {
+                        alert("Error whilst creating moment.");
+                    }
             }).catch(err => {
                     console.log(err);
                 });

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, Image, TouchableOpacity, ActionSheetIOS} from 'react-native';
 
 import {containerPadding, months, days} from '../variables'
 import {FormatDate} from '../helpers'
@@ -29,7 +29,36 @@ export default class TextMoment extends Component<Props> {
     toggleFavourite = () => {
         this.setState(state => ({isFavourite: state.isFavourite === Fav ? NonFav : Fav}))
         //TODO: Add API call
-    }
+    };
+
+    /**
+     * Launches the moment action menu for IOS
+     */
+    momentActionMenu = () => {
+        ActionSheetIOS.showActionSheetWithOptions(
+            {
+                title: "Moment Options",
+                options: ['Cancel', 'Edit Moment', 'Show Moment Location', 'Delete Moment'],
+                destructiveButtonIndex: 3,
+                cancelButtonIndex: 0,
+            },
+            (buttonIndex) => {
+                // Delete button
+                if (buttonIndex === 1) {
+                    //TODO: Delete the moment
+                }
+                // Edit moment
+                else if(buttonIndex === 2) {
+                    //TODO: Edit the moment
+                }
+                // Show moment location
+                else if(buttonIndex === 2) {
+                    //TODO: Show the moment location
+                }
+            },
+        );
+
+    };
 
     /**
      * Render the component
@@ -48,7 +77,7 @@ export default class TextMoment extends Component<Props> {
             <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 1}} angle={45} colors={['#A8FF78', '#1CD8D2']} style={styles.background}>
 
                 <View style={styles.test}>
-                    <MomentNav text={"Text Moment"} {...this.props}/>
+                    <MomentNav text={"Text Moment"} onActionMenuPress={this.momentActionMenu} {...this.props}/>
                 </View>
 
 
